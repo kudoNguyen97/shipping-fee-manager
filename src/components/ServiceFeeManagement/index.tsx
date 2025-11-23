@@ -53,6 +53,14 @@ export const ServiceFeeManagement = () => {
     );
   };
 
+  const handleCurrencyChange = (tabName: string, newCurrency: string) => {
+    setTabs(
+      tabs.map((tab) =>
+        tab.nameTab === tabName ? { ...tab, currency: newCurrency } : tab
+      )
+    );
+  };
+
   const handleSave = () => {
     // Simulate API call to save/update data
     const payload = {
@@ -93,6 +101,7 @@ export const ServiceFeeManagement = () => {
         data={tab.serviceFees}
         currency={tab.currency}
         onChange={(newData) => handleServiceFeesChange(tab.nameTab, newData)}
+        onCurrencyChange={(newCurrency) => handleCurrencyChange(tab.nameTab, newCurrency)}
       />
     ),
   }));

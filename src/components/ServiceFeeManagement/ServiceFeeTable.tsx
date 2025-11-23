@@ -8,9 +8,10 @@ interface ServiceFeeTableProps {
   data: ServiceFee[];
   currency: string;
   onChange: (data: ServiceFee[]) => void;
+  onCurrencyChange: (currency: string) => void;
 }
 
-export const ServiceFeeTable = ({ data, currency, onChange }: ServiceFeeTableProps) => {
+export const ServiceFeeTable = ({ data, currency, onChange, onCurrencyChange }: ServiceFeeTableProps) => {
   const [editingKey, setEditingKey] = useState<string>("");
   const [editingField, setEditingField] = useState<string>("");
 
@@ -42,6 +43,7 @@ export const ServiceFeeTable = ({ data, currency, onChange }: ServiceFeeTablePro
   };
 
   const handleAddRow = () => {
+    const timestamp = Date.now();
     const newRow: ServiceFee = {
       serviceType: "NEW_SERVICE",
       calcFeeType: "CALCULATE_FEE_TYPE_UNSPECIFIED",
@@ -52,7 +54,7 @@ export const ServiceFeeTable = ({ data, currency, onChange }: ServiceFeeTablePro
       distanceTo: 0,
       packageType: "PACKAGE_TYPE_UNSPECIFIED",
       category: "CATEGORY_OF_SHIPMENT_UNSPECIFIED",
-      zoneFromCode: "",
+      zoneFromCode: `temp_${timestamp}`,
       zoneToCode: "",
       shippingType: "SHIPPING_TYPE_UNSPECIFIED",
       calcCondition: "CALC_CONDITION_UNSPECIFIED",
@@ -299,7 +301,18 @@ export const ServiceFeeTable = ({ data, currency, onChange }: ServiceFeeTablePro
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-foreground">Service Fee Table</h3>
+        <div className="flex items-center gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Service Fee Table</h3>
+          <div className="flex items-center gap-2">
+            <label className="text-sm text-muted-foreground">Currency:</label>
+            <Input
+              value={currency}
+              onChange={(e) => onCurrencyChange(e.target.value)}
+              placeholder="e.g., VND, USD"
+              className="w-32"
+            />
+          </div>
+        </div>
         <Button
           type="primary"
           icon={<PlusOutlined />}
@@ -311,7 +324,7 @@ export const ServiceFeeTable = ({ data, currency, onChange }: ServiceFeeTablePro
       <Table
         columns={columns}
         dataSource={data}
-        rowKey={(record) => `${record.serviceType}_${record.zoneFromCode}_${record.zoneToCode}`}
+        rowKey={(record, index) => `${record.serviceType}_${record.zoneFromCode}_${record.zoneToCode}_${index}`}
         scroll={{ x: 2000 }}
         pagination={{ pageSize: 10 }}
         bordered
