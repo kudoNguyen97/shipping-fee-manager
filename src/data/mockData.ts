@@ -3,7 +3,9 @@ import { ServiceFeesByDeliveryScope } from "@/types/serviceFee";
 export const mockServiceFeesData: ServiceFeesByDeliveryScope = {
   serviceFeesByDeliveryScope: [
     {
-      nameTab: "Domestic Delivery",
+      nameTab: "Domestic (VN - VN)",
+      fromCountry: "VN",
+      toCountry: "VN",
       currency: "VND",
       serviceFees: [
         {
@@ -47,7 +49,9 @@ export const mockServiceFeesData: ServiceFeesByDeliveryScope = {
       ],
     },
     {
-      nameTab: "International Delivery",
+      nameTab: "International (VN - US)",
+      fromCountry: "VN",
+      toCountry: "US",
       currency: "USD",
       serviceFees: [
         {
