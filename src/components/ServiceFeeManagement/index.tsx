@@ -15,16 +15,21 @@ export const ServiceFeeManagement = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAddTab = (values: { nameTab: string; currency: string }) => {
+  const handleAddTab = (values: { fromCountry: string; toCountry: string; currency: string }) => {
+    const serviceType = values.fromCountry === values.toCountry ? "Domestic" : "International";
+    const generatedNameTab = `${serviceType} (${values.fromCountry} - ${values.toCountry})`;
+    
     const newTab: ServiceFeeTab = {
-      nameTab: values.nameTab,
+      nameTab: generatedNameTab,
+      fromCountry: values.fromCountry,
+      toCountry: values.toCountry,
       currency: values.currency,
       serviceFees: [],
     };
 
     // Check if tab name already exists
-    if (tabs.some((tab) => tab.nameTab === values.nameTab)) {
-      message.error("Tab name already exists!");
+    if (tabs.some((tab) => tab.nameTab === generatedNameTab)) {
+      message.error("Tab with this country combination already exists!");
       return;
     }
 

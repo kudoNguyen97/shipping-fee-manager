@@ -17,6 +17,8 @@ export interface ServiceFee {
 
 export interface ServiceFeeTab {
   nameTab: string;
+  fromCountry: string;
+  toCountry: string;
   currency: string;
   serviceFees: ServiceFee[];
 }
