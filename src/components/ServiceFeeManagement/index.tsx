@@ -16,6 +16,14 @@ export const ServiceFeeManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddTab = (values: { fromCountry: string; toCountry: string; currency: string }) => {
+    // Check if country combination already exists
+    if (tabs.some((tab) => 
+      tab.fromCountry === values.fromCountry && tab.toCountry === values.toCountry
+    )) {
+      message.error("Tab with this country combination already exists!");
+      return;
+    }
+
     const serviceType = values.fromCountry === values.toCountry ? "Domestic" : "International";
     const generatedNameTab = `${serviceType} (${values.fromCountry} - ${values.toCountry})`;
     
@@ -26,12 +34,6 @@ export const ServiceFeeManagement = () => {
       currency: values.currency,
       serviceFees: [],
     };
-
-    // Check if tab name already exists
-    if (tabs.some((tab) => tab.nameTab === generatedNameTab)) {
-      message.error("Tab with this country combination already exists!");
-      return;
-    }
 
     setTabs([...tabs, newTab]);
     setActiveKey(newTab.nameTab);

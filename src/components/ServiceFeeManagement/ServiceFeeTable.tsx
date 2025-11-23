@@ -4,6 +4,15 @@ import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { ServiceFee } from "@/types/serviceFee";
 import type { ColumnType } from "antd/es/table";
 
+// Helper function to format enum-like text to human-readable format
+const formatEnumText = (text: string): string => {
+  if (!text) return "";
+  return text
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
 interface ServiceFeeTableProps {
   data: ServiceFee[];
   currency: string;
@@ -127,7 +136,7 @@ export const ServiceFeeTable = ({ data, currency, onChange, onCurrencyChange }: 
           onChange={(value) => handleSave(record, field, value)}
           onBlur={() => setEditingKey("")}
           className="w-full"
-          options={options.map((opt) => ({ label: opt, value: opt }))}
+          options={options.map((opt) => ({ label: formatEnumText(opt), value: opt }))}
         />
       );
     }
@@ -150,7 +159,7 @@ export const ServiceFeeTable = ({ data, currency, onChange, onCurrencyChange }: 
       width: 180,
       render: (text, record) => (
         <EditableCell record={record} field="serviceType" type="select">
-          {text}
+          {formatEnumText(text)}
         </EditableCell>
       ),
     },
@@ -161,7 +170,7 @@ export const ServiceFeeTable = ({ data, currency, onChange, onCurrencyChange }: 
       width: 160,
       render: (text, record) => (
         <EditableCell record={record} field="calcFeeType">
-          {text}
+          {formatEnumText(text)}
         </EditableCell>
       ),
     },
@@ -227,7 +236,7 @@ export const ServiceFeeTable = ({ data, currency, onChange, onCurrencyChange }: 
       width: 150,
       render: (text, record) => (
         <EditableCell record={record} field="packageType">
-          {text}
+          {formatEnumText(text)}
         </EditableCell>
       ),
     },
@@ -238,7 +247,7 @@ export const ServiceFeeTable = ({ data, currency, onChange, onCurrencyChange }: 
       width: 180,
       render: (text, record) => (
         <EditableCell record={record} field="category">
-          {text}
+          {formatEnumText(text)}
         </EditableCell>
       ),
     },
@@ -271,7 +280,7 @@ export const ServiceFeeTable = ({ data, currency, onChange, onCurrencyChange }: 
       width: 150,
       render: (text, record) => (
         <EditableCell record={record} field="shippingType">
-          {text}
+          {formatEnumText(text)}
         </EditableCell>
       ),
     },
