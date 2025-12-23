@@ -1,9 +1,9 @@
-import { Modal, Form, Input, Select } from "antd";
+import { Modal, Form, Select } from "antd";
 
 interface AddTabModalProps {
   open: boolean;
   onCancel: () => void;
-  onOk: (values: { fromCountry: string; toCountry: string; currency: string }) => void;
+  onOk: (values: { fromCountry: string; toCountry: string }) => void;
 }
 
 const countryOptions = [
@@ -55,14 +55,6 @@ export const AddTabModal = ({ open, onCancel, onOk }: AddTabModalProps) => {
           rules={[{ required: true, message: "Please select to country!" }]}
         >
           <Select placeholder="Select to country" options={countryOptions} />
-        </Form.Item>
-
-        <Form.Item
-          name="currency"
-          label="Currency"
-          rules={[{ required: true, message: "Please input currency!" }]}
-        >
-          <Input placeholder="e.g., VND, USD, EUR" />
         </Form.Item>
       </Form>
     </Modal>
