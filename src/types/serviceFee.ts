@@ -17,17 +17,17 @@ export interface ServiceFee {
 }
 
 export interface ServiceFeeCard {
-    id: string;
-    cities: string[];
-    currency: string;
-    serviceFees: ServiceFee[];
+  id: string;
+  cities: string[];
+  serviceFees: ServiceFee[];
 }
 
 export interface ServiceFeeTab {
-    nameTab: string;
-    fromCountry: string;
-    toCountry: string;
-    cards: ServiceFeeCard[];
+  nameTab: string;
+  fromCountry: string;
+  toCountry: string;
+  currency: string;
+  cards: ServiceFeeCard[];
 }
 
 export interface ServiceFeesByDeliveryScope {

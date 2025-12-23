@@ -20,14 +20,12 @@ interface ServiceFeeTableProps {
     data: ServiceFee[];
     currency: string;
     onChange: (data: ServiceFee[]) => void;
-    onCurrencyChange: (currency: string) => void;
 }
 
 export const ServiceFeeTable = ({
     data,
     currency,
     onChange,
-    onCurrencyChange,
 }: ServiceFeeTableProps) => {
     const [editingKey, setEditingKey] = useState<string>('');
     const [editingField, setEditingField] = useState<keyof ServiceFee | ''>('');
@@ -372,22 +370,9 @@ export const ServiceFeeTable = ({
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
-                <div className="flex items-center gap-4">
-                    <h3 className="text-lg font-semibold text-foreground">
-                        Service Fee Table
-                    </h3>
-                    <div className="flex items-center gap-2">
-                        <label className="text-sm text-muted-foreground">
-                            Currency:
-                        </label>
-                        <Input
-                            value={currency}
-                            onChange={(e) => onCurrencyChange(e.target.value)}
-                            placeholder="e.g., VND, USD"
-                            className="w-32"
-                        />
-                    </div>
-                </div>
+                <h3 className="text-lg font-semibold text-foreground">
+                    Service Fee Table
+                </h3>
                 <Button
                     type="primary"
                     icon={<PlusOutlined />}

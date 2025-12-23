@@ -19,21 +19,19 @@ const CITY_OPTIONS = [
 
 interface ServiceFeeCardProps {
     card: ServiceFeeCardType;
+    currency: string;
     onUpdate: (updatedCard: ServiceFeeCardType) => void;
     onRemove: () => void;
 }
 
 export const ServiceFeeCardComponent = ({
     card,
+    currency,
     onUpdate,
     onRemove,
 }: ServiceFeeCardProps) => {
     const handleCitiesChange = (cities: string[]) => {
         onUpdate({ ...card, cities });
-    };
-
-    const handleCurrencyChange = (currency: string) => {
-        onUpdate({ ...card, currency });
     };
 
     const handleServiceFeesChange = (serviceFees: ServiceFee[]) => {
@@ -87,9 +85,8 @@ export const ServiceFeeCardComponent = ({
                 {/* Service Fee Table Section */}
                 <ServiceFeeTable
                     data={card.serviceFees}
-                    currency={card.currency}
+                    currency={currency}
                     onChange={handleServiceFeesChange}
-                    onCurrencyChange={handleCurrencyChange}
                 />
             </div>
         </Card>
