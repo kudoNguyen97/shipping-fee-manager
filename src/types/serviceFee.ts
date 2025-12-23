@@ -16,12 +16,18 @@ export interface ServiceFee {
     fees?: Record<string, number>;
 }
 
+export interface ServiceFeeCard {
+    id: string;
+    cities: string[];
+    currency: string;
+    serviceFees: ServiceFee[];
+}
+
 export interface ServiceFeeTab {
     nameTab: string;
     fromCountry: string;
     toCountry: string;
-    currency: string;
-    serviceFees: ServiceFee[];
+    cards: ServiceFeeCard[];
 }
 
 export interface ServiceFeesByDeliveryScope {

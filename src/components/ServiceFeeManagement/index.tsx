@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Tabs, Button, Popconfirm, message } from 'antd';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { AddTabModal } from './AddTabModal';
-import { ServiceFeeTable } from './ServiceFeeTable';
-import { ServiceFeeTab, ServiceFee } from '@/types/serviceFee';
+import { ServiceFeeCardComponent } from './ServiceFeeCard';
+import { ServiceFeeTab, ServiceFeeCard, ServiceFee } from '@/types/serviceFee';
 import { mockServiceFeesData } from '@/data/mockData';
 
 export const ServiceFeeManagement = () => {
@@ -15,13 +15,17 @@ export const ServiceFeeManagement = () => {
         const base = Date.now();
         return rawTabs.map((tab, ti) => ({
             ...tab,
-            serviceFees: tab.serviceFees.map((sf, i) => ({
-                id:
-                    sf.id ??
-                    `init_${base}_${ti}_${i}_${Math.random()
-                        .toString(36)
-                        .slice(2, 6)}`,
-                ...sf,
+            cards: tab.cards.map((card, ci) => ({
+                ...card,
+                id: card.id || `card_${base}_${ti}_${ci}`,
+                serviceFees: card.serviceFees.map((sf, i) => ({
+                    id:
+                        sf.id ??
+                        `init_${base}_${ti}_${ci}_${i}_${Math.random()
+                            .toString(36)
+                            .slice(2, 6)}`,
+                    ...sf,
+                })),
             })),
         }));
     };
@@ -37,7 +41,6 @@ export const ServiceFeeManagement = () => {
     const handleAddTab = (values: {
         fromCountry: string;
         toCountry: string;
-        currency: string;
     }) => {
         // Check if country combination already exists
         if (
@@ -61,8 +64,7 @@ export const ServiceFeeManagement = () => {
             nameTab: generatedNameTab,
             fromCountry: values.fromCountry,
             toCountry: values.toCountry,
-            currency: values.currency,
-            serviceFees: [],
+            cards: [],
         };
 
         setTabs([...tabs, newTab]);
@@ -82,27 +84,56 @@ export const ServiceFeeManagement = () => {
         message.success('Tab removed successfully!');
     };
 
-    const handleServiceFeesChange = (
+    const handleAddCard = (tabName: string) => {
+        const timestamp = Date.now();
+        const newCard: ServiceFeeCard = {
+            id: `card_${timestamp}`,
+            cities: [],
+            currency: 'USD',
+            serviceFees: [],
+        };
+
+        setTabs(
+            tabs.map((tab) =>
+                tab.nameTab === tabName
+                    ? { ...tab, cards: [...tab.cards, newCard] }
+                    : tab,
+            ),
+        );
+        message.success('Card added successfully!');
+    };
+
+    const handleUpdateCard = (
         tabName: string,
-        newServiceFees: ServiceFee[],
+        cardId: string,
+        updatedCard: ServiceFeeCard,
     ) => {
         setTabs(
             tabs.map((tab) =>
                 tab.nameTab === tabName
-                    ? { ...tab, serviceFees: newServiceFees }
+                    ? {
+                          ...tab,
+                          cards: tab.cards.map((card) =>
+                              card.id === cardId ? updatedCard : card,
+                          ),
+                      }
                     : tab,
             ),
         );
     };
 
-    const handleCurrencyChange = (tabName: string, newCurrency: string) => {
+    const handleRemoveCard = (tabName: string, cardId: string) => {
         setTabs(
             tabs.map((tab) =>
                 tab.nameTab === tabName
-                    ? { ...tab, currency: newCurrency }
+                    ? {
+                          ...tab,
+                          cards: tab.cards.filter((card) => card.id !== cardId),
+                      }
                     : tab,
             ),
         );
+        message.success('Card removed successfully!');
     };
 
     const handleSave = () => {
@@ -141,16 +172,34 @@ export const ServiceFeeManagement = () => {
             </span>
         ),
         children: (
-            <ServiceFeeTable
-                data={tab.serviceFees}
-                currency={tab.currency}
-                onChange={(newData) =>
-                    handleServiceFeesChange(tab.nameTab, newData)
-                }
-                onCurrencyChange={(newCurrency) =>
-                    handleCurrencyChange(tab.nameTab, newCurrency)
-                }
-            />
+            <div className="p-4 space-y-4">
+                <div className="flex justify-end">
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => handleAddCard(tab.nameTab)}
+                    >
+                        Add Card
+                    </Button>
+                </div>
+
+                {tab.cards.length === 0 ? (
+                    <div className="text-center py-12 text-muted-foreground">
+                        <p>No cards yet. Click "Add Card" to create one.</p>
+                    </div>
+                ) : (
+                    tab.cards.map((card) => (
+                        <ServiceFeeCardComponent
+                            key={card.id}
+                            card={card}
+                            onUpdate={(updatedCard) =>
+                                handleUpdateCard(tab.nameTab, card.id, updatedCard)
+                            }
+                            onRemove={() => handleRemoveCard(tab.nameTab, card.id)}
+                        />
+                    ))
+                )}
+            </div>
         ),
     }));
 
