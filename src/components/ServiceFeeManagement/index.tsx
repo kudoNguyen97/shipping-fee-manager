@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tabs, Button, Popconfirm, message } from 'antd';
+import { Tabs, Button, Popconfirm, message, Input } from 'antd';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { AddTabModal } from './AddTabModal';
 import { ServiceFeeCardComponent } from './ServiceFeeCard';
@@ -64,6 +64,7 @@ export const ServiceFeeManagement = () => {
             nameTab: generatedNameTab,
             fromCountry: values.fromCountry,
             toCountry: values.toCountry,
+            currency: 'USD',
             cards: [],
         };
 
@@ -89,7 +90,6 @@ export const ServiceFeeManagement = () => {
         const newCard: ServiceFeeCard = {
             id: `card_${timestamp}`,
             cities: [],
-            currency: 'USD',
             serviceFees: [],
         };
 
@@ -136,6 +136,14 @@ export const ServiceFeeManagement = () => {
         message.success('Card removed successfully!');
     };
 
+    const handleCurrencyChange = (tabName: string, currency: string) => {
+        setTabs(
+            tabs.map((tab) =>
+                tab.nameTab === tabName ? { ...tab, currency } : tab,
+            ),
+        );
+    };
+
     const handleSave = () => {
         // Simulate API call to save/update data
         const payload = {
@@ -173,7 +181,19 @@ export const ServiceFeeManagement = () => {
         ),
         children: (
             <div className="p-4 space-y-4">
-                <div className="flex justify-end">
+                {/* Currency field at tab level */}
+                <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                    <div className="flex items-center gap-4">
+                        <label className="text-sm font-medium text-foreground">
+                            Currency:
+                        </label>
+                        <Input
+                            value={tab.currency}
+                            onChange={(e) => handleCurrencyChange(tab.nameTab, e.target.value)}
+                            placeholder="e.g., VND, USD"
+                            className="w-32"
+                        />
+                    </div>
                     <Button
                         type="primary"
                         icon={<PlusOutlined />}
@@ -192,6 +212,7 @@ export const ServiceFeeManagement = () => {
                         <ServiceFeeCardComponent
                             key={card.id}
                             card={card}
+                            currency={tab.currency}
                             onUpdate={(updatedCard) =>
                                 handleUpdateCard(tab.nameTab, card.id, updatedCard)
                             }

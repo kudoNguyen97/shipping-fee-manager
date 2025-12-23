@@ -6,11 +6,11 @@ export const mockServiceFeesData: ServiceFeesByDeliveryScope = {
             nameTab: 'Domestic (VN - VN)',
             fromCountry: 'VN',
             toCountry: 'VN',
+            currency: 'VND',
             cards: [
                 {
                     id: 'card_1',
                     cities: ['HN', 'HCM'],
-                    currency: 'VND',
                     serviceFees: [
                         {
                             serviceType: 'EXPRESS',
@@ -55,7 +55,6 @@ export const mockServiceFeesData: ServiceFeesByDeliveryScope = {
                 {
                     id: 'card_2',
                     cities: ['DN', 'HP'],
-                    currency: 'VND',
                     serviceFees: [
                         {
                             serviceType: 'STANDARD',
@@ -84,11 +83,11 @@ export const mockServiceFeesData: ServiceFeesByDeliveryScope = {
             nameTab: 'International (VN - US)',
             fromCountry: 'VN',
             toCountry: 'US',
+            currency: 'USD',
             cards: [
                 {
                     id: 'card_3',
                     cities: ['HN', 'NYC'],
-                    currency: 'USD',
                     serviceFees: [
                         {
                             serviceType: 'EXPRESS_INTERNATIONAL',
@@ -117,11 +116,11 @@ export const mockServiceFeesData: ServiceFeesByDeliveryScope = {
             nameTab: 'International (CN - VN)',
             fromCountry: 'CN',
             toCountry: 'VN',
+            currency: 'CNY',
             cards: [
                 {
                     id: 'card_4',
                     cities: ['GZ', 'HN'],
-                    currency: 'CNY',
                     serviceFees: [
                         {
                             serviceType: 'EXPRESS',
